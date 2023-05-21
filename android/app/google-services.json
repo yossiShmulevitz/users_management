@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "53361383199",
+    "firebase_url": "https://usersdb-4d55a-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "usersdb-4d55a",
+    "storage_bucket": "usersdb-4d55a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53361383199:android:f164e57fc7f9808331022a",
+        "android_client_info": {
+          "package_name": "com.example.login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "53361383199-t95db704ok8qiuto1sda31032s0hb45m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLTNd6IUYNtRVjhgoPsyRSPEorCWQVSMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "53361383199-t95db704ok8qiuto1sda31032s0hb45m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "53361383199-6bipi4pfojferrfi3mcljinbcc9anjnp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.login"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53361383199:android:a400bce64f4fdc2531022a",
+        "android_client_info": {
+          "package_name": "com.example.users_management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "53361383199-t95db704ok8qiuto1sda31032s0hb45m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLTNd6IUYNtRVjhgoPsyRSPEorCWQVSMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "53361383199-t95db704ok8qiuto1sda31032s0hb45m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "53361383199-6bipi4pfojferrfi3mcljinbcc9anjnp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.login"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
