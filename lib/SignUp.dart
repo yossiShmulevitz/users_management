@@ -29,7 +29,6 @@ class _SignUp extends State<SignUp> {
   //blob URL: object representing an image file on the local system
   //File? imageId;
   Uint8List? fileBytes;
-  final String phoneNumber = '+9720526897627';
   String password = "";
 
   //object for adding new user
@@ -142,7 +141,7 @@ class _SignUp extends State<SignUp> {
 
                     // Calling UserAuthentication function in UserAuthentication.dart
                     bool authenticationResult =
-                        await UserAuthentication(context, phoneNumber);
+                        await UserAuthentication(context, "+972$phone");
 
                     if (authenticationResult) {
                       // Password is correct
@@ -163,6 +162,14 @@ class _SignUp extends State<SignUp> {
                           );
                         },
                       );
+
+                    await suc.addUserToFirebase(
+                        username, email, phone, fileBytes!, password);
+
+                    // Navigator - stack of routes(screens) allows replace screens
+                    // the (context) refers to the BuildContext parameter that is typically passed as an argument
+                    // Navigator.pop(context) - return to previos route
+                    Navigator.pop(context);
                     } else {
                       // Password is incorrect
                       showDialog(
@@ -183,16 +190,6 @@ class _SignUp extends State<SignUp> {
                         },
                       );
                     }
-
-                    //_navigateToUserAuthentication();
-
-                    // await suc.addUserToFirebase(
-                    //     username, email, phone, fileBytes!, password);
-
-                    //Navigator - stack of routes(screens) allows replace screens
-                    //the (context) refers to the BuildContext parameter that is typically passed as an argument
-                    // Navigator.pop(context) - return to previos route
-                    //Navigator.pop(context);
                   }
                 },
                 child: Text('Sign up'),
