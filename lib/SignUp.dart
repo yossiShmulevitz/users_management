@@ -1,13 +1,12 @@
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'SignUpController.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:path/path.dart' as path;
-import 'UserAuthentication.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
+
+import 'SignUpController.dart';
+import 'PhoneNumAuthentication.dart';
+import 'EmailAuthentication.dart';
+
+//yossishmulevitz@gmail.com
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -16,22 +15,16 @@ class SignUp extends StatefulWidget {
   _SignUp createState() => _SignUp();
 }
 
-//class _SignUp extends StatelessWidget {
 class _SignUp extends State<SignUp> {
-  final _formKey = GlobalKey<FormState>();
-  //***the "_" means private
-  //***string? can contain null
-  //String? _username;
   String username = "";
   String email = "";
+  bool emailAuthRes = false;
   String phone = "";
-  //File can either hold a reference to a File object or be null
-  //blob URL: object representing an image file on the local system
-  //File? imageId;
-  Uint8List? fileBytes;
   String password = "";
 
-  //object for adding new user
+  final _formKey = GlobalKey<FormState>();
+  //blob URL: object representing an image file on the local system
+  Uint8List? fileBytes;
   SignUpController suc = new SignUpController();
 
   //handle the image selection from the devic
@@ -47,6 +40,36 @@ class _SignUp extends State<SignUp> {
         fileBytes = Uint8List.fromList(imageBytes);
       });
     }
+  }
+
+  // bool result = false;
+  // void navigateToEmailAuthentication() async {
+  //   final bool receivedResult = await Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //         builder: (context) => emailAuthentication(email: email)),
+  //   );
+  //   setState(() {
+  //     result = receivedResult;
+  //   });
+  //   print('navigateToEmailAuthentication called');
+  // }
+  // void navigateToEmailAuthentication() {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => EmailAuthentication()),
+  //   );
+  //   print('navigateToEmailAuthentication called');
+  // }
+
+  Future<void> navigateToEmailAuthentication() async {
+    emailAuthRes = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => EmailAuthentication(email: 'email')),
+    );
+
+    print('email hath return: ${emailAuthRes}');
   }
 
   @override
@@ -74,7 +97,6 @@ class _SignUp extends State<SignUp> {
                   return null;
                 },
                 onSaved: (value) {
-                  //value! - can be NULL
                   username = value!;
                 },
               ),
@@ -135,65 +157,50 @@ class _SignUp extends State<SignUp> {
               //Sign up button
               ElevatedButton(
                 onPressed: () async {
-                  // Validate and save form data
+                  // Validate form data
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
 
-                    // Calling UserAuthentication function in UserAuthentication.dart
+                    //User phone Authentication
                     bool authenticationResult =
-                        await UserAuthentication(context, "+972$phone");
+                        await phoneNumAuthentication(context, "+972$phone");
 
+                    // Phone assword is correct
                     if (authenticationResult) {
-                      // Password is correct
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Correct!'),
-                            content: Text('The password is correct.'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Close'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      print('phone Authentication: ${authenticationResult}');
 
-                    await suc.addUserToFirebase(
-                        username, email, phone, fileBytes!, password);
+                      await navigateToEmailAuthentication();
+                      if (emailAuthRes) {
+                        //sign up
+                        await suc.addUserToFirebase(
+                            username, email, phone, fileBytes!, password);
 
-                    // Navigator - stack of routes(screens) allows replace screens
-                    // the (context) refers to the BuildContext parameter that is typically passed as an argument
-                    // Navigator.pop(context) - return to previos route
-                    Navigator.pop(context);
+                        Navigator.pop(context);
+                      } else {
+                        print(
+                            'there was a problem withe the email huthentication');
+                      }
+                      //print('Email authentication: ${result}');
+
+                      //sign up
+                      // await suc.addUserToFirebase(
+                      //     username, email, phone, fileBytes!, password);
+
+                      // Phonne password is incorrect
                     } else {
-                      // Password is incorrect
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Error!'),
-                            content: Text('Try again'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Close'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      //   print('phone Authentication: ${authenticationResult}');
                     }
                   }
                 },
                 child: Text('Sign up'),
               ),
+              // SizedBox(height: 16.0),
+              // ElevatedButton(
+              //   onPressed: () async {
+              //     navigateToEmailAuthentication();
+              //   },
+              //   child: Text('Go to Email Authentication'),
+              // ),
             ],
           ),
         ),
@@ -201,42 +208,3 @@ class _SignUp extends State<SignUp> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import 'package:flutter/material.dart';
-
-// import 'UserAuthentication.dart';
-
-// class SignUp extends StatelessWidget {
-//   final String phoneNumber;
-
-//   const SignUp({required this.phoneNumber});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Authentication'),
-//       ),
-//       body: Center(
-//         child: ElevatedButton(
-//           onPressed: () async {
-//             await UserAuthentication(context, phoneNumber);
-//           },
-//           child: Text('Authenticate'),
-//         ),
-//       ),
-//     );
-//   }
-// }

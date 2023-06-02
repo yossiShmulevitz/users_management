@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 
-Future<bool> UserAuthentication(BuildContext context, String phoneNumber) async {
+Future<bool> phoneNumAuthentication(BuildContext context, String phoneNumber) async {
   FirebaseAuth auth = FirebaseAuth.instance;
   Completer<bool> completer = Completer<bool>();
 

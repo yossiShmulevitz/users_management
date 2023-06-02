@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'firebase_options.dart';
 import 'package:flutter/material.dart';
+
+import 'firebase_options.dart';
 import 'SignUp.dart';
 import 'LogIn.dart';
 import 'Home.dart';
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Login page'),
+      home: const MyHomePage(title: 'Login / signup'),
     );
   }
 }
@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // Variables for storing username and password
   String? _username;
   String? _password;
-  LogIn li = new LogIn();
+  LogIn logIn = new LogIn();
 
   // Method to handle button tap and navigate to SignUpPage
   void _navigateToSignUp() {
@@ -109,16 +109,14 @@ class _MyHomePageState extends State<MyHomePage> {
               // Login button
               ElevatedButton(
                 onPressed: () async {
-                  // Validate form and save
+                  // Validate form
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    bool exists = await li.isUserExists(_username!, _password!);
+
+                    bool exists = await logIn.isUserExists(_username!, _password!);
                     if (exists) {
-                      // User exists
-                      _navigateToHome(); // Add parentheses to call the method
+                      _navigateToHome();
                     } else {
-                      // User does not exist
-                      // Display an error message
                       showDialog(
                         context: context,
                         builder: (context) {
